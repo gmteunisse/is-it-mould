@@ -10,3 +10,6 @@ After installing `conda`, make sure to install the Python Reddit API Wrapper (pr
 ```
 conda install -c conda-forge praw
 ```
+
+## Creating a Reddit application
+We will be scraping the `r/kombucha` subreddit for this project. This requires setting up a Reddit application. Head over to (the authorized applications page)[https://www.reddit.com/prefs/apps] and create a new script at the bottom. It is required to add a redirect uri, use `http://localhost:8080` here. Once your apps has been created, you will have the required credentials to start using the Reddit API.
