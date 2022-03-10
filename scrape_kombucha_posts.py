@@ -5,6 +5,7 @@ import datetime
 import os.path
 import time
 
+# Class to store info about submission
 class Submission:
 
     # Base attributes imported from pushshift
@@ -73,7 +74,7 @@ def fetch_ps_submission(subreddit, limit, fields, begin_ts, end_ts):
 
 # Function to scrape all post between two dates
 # dates in "MM/DD/YYYY"
-def scrape_ps_subs(subreddit = None, limit = 100, fields = None, begin_date = None, end_date = None, verbose = True):
+def scrape_ps_subs(subreddit = None, limit = 100, fields = None, begin_date = None, end_date = None, verbose = True, wait = 1):
 
     # Max 100 hits per query
     limit = min(limit, 100)
@@ -83,6 +84,7 @@ def scrape_ps_subs(subreddit = None, limit = 100, fields = None, begin_date = No
     if end_date is None:
         end = datetime.datetime.today()
         end_ts = int(datetime.datetime.timestamp(end))
+        end_date = datetime.datetime.fromtimestamp(end_ts)
     else:
         end = datetime.datetime.strptime(end_date, "%m/%d/%Y")
         end_ts = int(datetime.datetime.timestamp(end))
@@ -98,6 +100,8 @@ def scrape_ps_subs(subreddit = None, limit = 100, fields = None, begin_date = No
     posts = []
 
     # Fetch posts until they run out
+    if verbose:
+        print("Fetching posts between %s and %s" % (begin_date, end_date))
     while (ts >= begin_ts and n_hits == limit):
 
         # Fetch and store results
@@ -111,8 +115,10 @@ def scrape_ps_subs(subreddit = None, limit = 100, fields = None, begin_date = No
         # Verbosity
         if verbose:
             dt = datetime.datetime.fromtimestamp(ts)
-            print("Number of posts fetched: %d\t(date/time: %s)" % (len(posts), dt))
-        time.sleep(1)
+            print("Number of posts fetched: %d\t(date/time of last post: %s)" % (len(posts), dt))
+        
+        # Prevent request overload
+        time.sleep(wait)
 
 
 def main():
@@ -126,7 +132,7 @@ def main():
             'link_flair_text',
             'retrieved_on',
             'title'], 
-        begin_date = "03/01/2022")
+        begin_date = "02/01/2022")
 
 if __name__ == "__main__":
     main()
