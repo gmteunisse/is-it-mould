@@ -10,7 +10,10 @@ This entire project will be written in Python. To avoid dependency errors, we wi
 After installing `conda`, make sure to install the Python Reddit API Wrapper (`praw`) in a new environment. This environment contains a python 3.x distribution and the `praw` python library, as well as all libraries required to run `praw`.
 
 ```
+# Install PRAW, required for scraping
 conda create -n praw -c conda-forge praw
+
+# Install PSAW, only required as part of `test_scraping.ipynb`
 conda activate praw
 pip3 install psaw
 conda deactivate
